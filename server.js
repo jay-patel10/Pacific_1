@@ -3,6 +3,10 @@ const cors = require("cors");
 
 const app = express();
 
+const swaggerUI = require('swagger-ui-express');
+const swaggerJsDoc = require('swagger-jsdoc');
+
+// app.use(express)
 var corsOptions = {
   origin: "http://localhost:8081"
 };
@@ -23,12 +27,44 @@ db.sequelize.sync()
     console.log("Failed to sync db: " + err.message);
   });
 
+const options ={
+  definition:{
+    openapi:"3.0.0",
+    info:{
+      title : "Tutorials Api",
+      version :"1.0.0",
+      description : "Simple Express tutorial api"
+    },
+    servers:[
+      {
+        url : "http://localhost:8080"
+      }
+    ]},
+    apis:["./routes/*.js"]
+}
+
+const specs = swaggerJsDoc(options)
+
+app.use("/api-docs",swaggerUI.serve, swaggerUI.setup(specs))
+
 
 app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
+  res.json({ message: "Welcome" });
 });
 
-require("./app/routes/turorial.routes")(app);
+app.get("/error",(req,res)=>{
+  try {
+    const user = getUser();
+    if(!user){
+      throw new Error("user not found");
+    }
+  } catch (error) {
+    console.log(error)
+    return res.status(400).send(error.message);
+  }
+})
+
+require("./app/routes/tutorial.routes")(app);
 
 
 const PORT = process.env.PORT || 8080;
