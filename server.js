@@ -1,12 +1,11 @@
-const express = require("express");
-const cors = require("cors");
+const express = require("express");  
+cors = require("cors");
 
 const app = express();
 
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 
-// app.use(express)
 var corsOptions = {
   origin: "http://localhost:8081"
 };
@@ -37,11 +36,11 @@ const options ={
     },
     servers:[
       {
-        url : "http://localhost:8080"
+        url : "http://localhost:8080",
       }
     ]},
-    apis:["./routes/*.js"]
-}
+    apis:["./app/routes/*.js"],
+};
 
 const specs = swaggerJsDoc(options)
 
