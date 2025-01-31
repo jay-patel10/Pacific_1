@@ -48,6 +48,9 @@ app.use("/api-docs",swaggerUI.serve, swaggerUI.setup(specs))
 
 
 app.get("/", (req, res) => {
+
+
+  
   res.json({ message: "Welcome" });
 });
 

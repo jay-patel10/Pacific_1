@@ -81,6 +81,8 @@ module.exports = app => {
  *     requestBody:
  *       required: true
  *       content:
+ * 
+
  *         application/json:
  *           schema:
  *             $ref: '#/tutorial.routes.js'
@@ -90,7 +92,7 @@ module.exports = app => {
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/components/schemas/tutorial'
+ *               $ref: '#/app/controllers/tutorial.controller'
  *       500:
  *         description: Some server error
  */
