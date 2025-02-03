@@ -173,6 +173,14 @@ module.exports = app => {
   // Delete all Tutorials
   router.delete("/", tutorials.deleteAll);
 
+  router.get("/signup", (req, res) => {
+    return res.render("signup");
+  });
+  
+  router.get("/login", (req, res) => {
+    return res.render("login");
+  });
+
   app.use('/api/tutorials', router);
   
 };

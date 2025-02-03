@@ -1,15 +1,12 @@
 const express = require("express");  
-cors = require("cors");
-
+const cors = require("cors");
 const app = express();
-
 const swaggerUI = require('swagger-ui-express');
 const swaggerJsDoc = require('swagger-jsdoc');
 
 var corsOptions = {
   origin: "http://localhost:8081"
 };
-
 app.use(cors(corsOptions));
 
 app.use(express.json());
@@ -48,22 +45,25 @@ app.use("/api-docs",swaggerUI.serve, swaggerUI.setup(specs))
 
 
 app.get("/", (req, res) => {
-
-
-  
   res.json({ message: "Welcome" });
 });
 
-app.get("/error",(req,res)=>{
-  try {
-    const user = getUser();
-    if(!user){
-      throw new Error("user not found");
-    }
-  } catch (error) {
-    console.log(error)
-    return res.status(400).send(error.message);
-  }
+app.all("*",(req,res,next)=>{
+    const erro = new Error("can not find your url");
+    erro.status = "fail";
+    erro.statusCode = 404;
+
+    next(erro);
+  })
+
+
+app.use ((error, req , res , next ) =>{
+      error.statusCode = error.statusCode || 500 ;
+      error.status = error.status || "error"
+      res.status(error.statusCode).json({
+        status : error.statusCode,
+        message :error.message
+      })
 })
 
 require("./app/routes/tutorial.routes")(app);
